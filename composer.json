@@ -1,0 +1,18 @@
+{
+    "name": "looking/looking",
+    "type": "project",
+    "description": "The Looking Framework.",
+    "keywords": [
+        "framework",
+        "looking"
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/",
+            "looking\\": "looking/"
+        }
+    }
+}
