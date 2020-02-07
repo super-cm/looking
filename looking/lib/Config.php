@@ -6,6 +6,9 @@ use looking\lib\exception\ErrorException;
 
 class Config {
 
+    /**
+     * @var array 配置文件
+     */
     private static $configFile = [];
 
     /**
@@ -30,17 +33,40 @@ class Config {
         while (($file = readdir($dirSource)) !== false) {
             if (strpos($file, '.php')) {
                 static::$configFile[] = $file;
-            }
-        }
 
-        // 载入配置文件
-        if (!empty(static::$configFile)) {
-            foreach (static::$configFile as $configFileName) {
-                require CONFIG_PATH . $configFileName;
+                require CONFIG_PATH . $file;
             }
         }
 
         return true;
+    }
+
+    /**
+     * 获得指定配置文件配置内容
+     * @param string $key 配置文件内容，例如：database.username
+     * @return mixed|null
+     */
+    public static function get($key = '') {
+
+        if (empty($key)) {
+            return null;
+        }
+
+        if (empty(static::$configFile)) {
+            return null;
+        }
+
+        list($configFileName, $configKeyName) = explode('.', $key);
+
+        foreach (static::$configFile as $configFileNameWithExt) {
+            if (false !== strpos($configFileNameWithExt, $configFileName)) {
+                $configFileContent = require CONFIG_PATH . $configFileNameWithExt;
+                
+                return array_key_exists($configKeyName, $configFileContent) ? $configFileContent[$configKeyName] : null;
+            }
+        }
+
+        return null;
     }
 
 }

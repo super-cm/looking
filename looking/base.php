@@ -20,4 +20,4 @@ require __DIR__ . '/../vendor/autoload.php';
 Error::register();
 Config::register();
 
-(new Index())->index();
+var_dump(Config::get('database.username'));
